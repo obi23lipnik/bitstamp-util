@@ -1,7 +1,8 @@
 Virtualenv
+env/*
 env
 .Python
 bin
 lib
 include
-*.py[cod]
+*.py[cod]g
