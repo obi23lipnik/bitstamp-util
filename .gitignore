@@ -1,5 +1,4 @@
 Virtualenvg
-env/*
 env/
 .Python
 bin
