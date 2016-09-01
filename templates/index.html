@@ -17,13 +17,22 @@
       // Displaying messages
       channel.bind('trade', function(data) {
         console.log(data);
+        var type;
         if (data.type == 0) {
-          document.getElementById('ttype').innerHTML = 'Bought';
+          type = 'Bought';
+          document.getElementById('ttype').innerHTML = type;
         } else {
-          document.getElementById('ttype').innerHTML = 'Sold';
+          type = 'Sold';
+          document.getElementById('ttype').innerHTML = type;
         }
         document.getElementById('price').innerHTML = data.price;
         document.getElementById('btc').innerHTML = data.amount;
+
+        var para = document.createElement("p");
+        var node = document.createTextNode("Trade ID = "+data.id+"    ||    "+data.amount+" BTC "+type+" for $"+data.price+" per BTC, $"+data.price*data.amount+" total");
+        para.appendChild(node);
+        var element = document.getElementById("archive");
+        element.appendChild(para);
       });
     </script>
     <style>
@@ -37,13 +46,32 @@
       <div class="row">
         <div class="col-sm-12">
           <h1>Bitstamp API util</h1>
+        </div>   
+        <br /> 
+
+        <div class="col-sm-3">
+          <div class="well well-lg">
+          <h1>Data</h1>
+          <h4>slight formatting applied</h4>
+          <li>Last price: ${{ data["last"] }}</li>
+          <li>Time: {{ bfDate }}</li>
+          <li>Bid price: ${{ data["bid"]}}</li>
+          <li>Ask price: ${{ data["ask"]}}</li>
+          <li>Volume traded last 24 hours: {{ data["volume"] }} BTC</li>
+          <li>VWAP: ${{data["vwap"]}}</li>
+          </div>
         </div>
-        <div class="col-sm-3 col-sm-offset-1">
-          <h4>Last price: </h4><p id=price>Waiting for trade ...</p>
-          <h4>Trade type: </h4><p id=ttype>Waiting for trade ...</p>
-          <h4>Bitcoin amount: </h4><p id=btc>Waiting for trade ...</p>
+        <div class="col-sm-3">
+          <div class="well well-lg">
+          <h3>Another data</h3>
+          <h4>raw json strip</h4>
+          {% for key in data %}
+              <li>{{ key }}: {{ data[key] }}</li>
+          {% endfor %}
+          </div>
         </div>
-        <div class="col-sm-3 col-sm-offset-1">
+
+        <div class="col-sm-3">
           <h2>Select Parameters</h2>
           <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown" >
             Select here...
@@ -56,25 +84,14 @@
           </button>
           <br />
         </div>
-        <br /> 
-        <div class="col-sm-3 col-sm-offset-1">
-          <div class="well well-lg">
-          <h1>Data</h1>
-          <h4>slight formatting applied</h4>
-          <li>Last price: ${{ data["last"] }}</li>
-          <li>Time: {{ bfDate }}</li>
-          <li>Bid price: ${{ data["bid"]}}</li>
-          <li>Ask price: ${{ data["ask"]}}</li>
-          <li>Volume traded last 24 hours: {{ data["volume"] }} BTC</li>
-          <li>VWAP: ${{data["vwap"]}}</li>
-          </div>
-          <div class="well well-lg">
-          <h3>Another data</h3>
-          <h4>raw json strip</h4>
-          {% for key in data %}
-              <li>{{ key }}: {{ data[key] }}</li>
-          {% endfor %}
-          </div>
+
+        <div class="col-sm-3">
+          <h4>Last price: </h4><p id=price>Waiting for trade ...</p>
+          <h4>Trade type: </h4><p id=ttype>Waiting for trade ...</p>
+          <h4>Bitcoin amount: </h4><p id=btc>Waiting for trade ...</p>
+        </div>
+        <div class="col-sm-12" id="archive">
+          <h3>Archive</h3>
         </div>
       </div>
     </div>
