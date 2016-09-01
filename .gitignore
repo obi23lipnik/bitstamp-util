@@ -1,6 +1,6 @@
-Virtualenv
+Virtualenvg
 env/*
-env
+env/
 .Python
 bin
 lib
