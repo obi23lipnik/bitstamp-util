@@ -14,20 +14,33 @@
       var pusher = new Pusher('de504dc5763aeef9ff52');
       var channel = pusher.subscribe('live_trades');
       i=0
-      // Displaying messages
+      var total_bought = 0;
+      var total_sold = 0;
       channel.bind('trade', function(data) {
+
+        /*
+            Updating the information 
+        */
+
         console.log(data);
         var type;
         if (data.type == 0) {
           type = 'Bought';
           document.getElementById('ttype').innerHTML = type;
+          total_bought = total_bought + data.amount;
         } else {
           type = 'Sold';
           document.getElementById('ttype').innerHTML = type;
+          total_sold = total_sold + data.amount;
         }
         document.getElementById('price').innerHTML = data.price;
         document.getElementById('btc').innerHTML = data.amount;
+        document.getElementById('bought').innerHTML = total_bought;
+        document.getElementById('sold').innerHTML = total_sold;
 
+        /*
+            Appending the archive
+        */
         var para = document.createElement("p");
         var node = document.createTextNode("Trade ID = "+data.id+"    ||    "+data.amount+" BTC "+type+" for $"+data.price+" per BTC, $"+data.price*data.amount+" total");
         para.appendChild(node);
@@ -89,6 +102,8 @@
           <h4>Last price: </h4><p id=price>Waiting for trade ...</p>
           <h4>Trade type: </h4><p id=ttype>Waiting for trade ...</p>
           <h4>Bitcoin amount: </h4><p id=btc>Waiting for trade ...</p>
+          <h4>Total bought so far: </h4><p id=bought>0</p>
+          <h4>Total sold so far: </h4><p id=sold>0</p>
         </div>
         <div class="col-sm-12" id="archive">
           <h3>Archive</h3>
